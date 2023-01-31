@@ -22,7 +22,7 @@ public class MagneticFieldParticle {
         gc.save();
         gc.translate(x, y);
         gc.rotate(angle);
-        gc.setFill(Color.GREEN);
+        gc.setFill(Color.GRAY);
         gc.fillRect(-width / 2, -height / 2, width, height);
         gc.restore();
         angle += 0.1;

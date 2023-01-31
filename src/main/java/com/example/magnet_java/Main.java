@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private int particlesAmount = 200;
+    private int particlesAmount = 600;
     private double canvasHeight = 720;
     private double canvasWidth = 1080;
     private Magnet magnet;
@@ -30,7 +30,7 @@ public class Main extends Application {
                 y = Math.random() * canvasHeight;
                 x = Math.random() * canvasWidth;
 
-                while (x > 430 & x < 650 & y > 250 & y < 470) {
+                while (x > 430 & x < 670 & y > 250 & y < 470) {
                     y = Math.random() * canvasHeight;
                     x = Math.random() * canvasWidth;
                 }
