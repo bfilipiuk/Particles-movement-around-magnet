@@ -6,41 +6,58 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 
-public class Magnet {
-    private Rectangle leftRectangle;
-    private Rectangle rightRectangle;
-    private int width;
-    private int height;
-    private int centerX;
-    private int centerY;
+public class Magnet extends Rectangle {
+    public Rectangle getsMagnet() {
+        return sMagnet;
+    }
 
-    public Magnet(int centerX, int centerY, int width, int height) {
+    public Rectangle getnMagnet() {
+        return nMagnet;
+    }
+
+    private final Rectangle sMagnet;
+    private final Rectangle nMagnet;
+    private final double width;
+    private final double height;
+    public double centerX;
+    public double centerY;
+
+    public Magnet(double centerX, double centerY, double width, double height) {
         this.centerX = centerX;
         this.centerY = centerY;
         this.width = width;
         this.height = height;
 
-        int leftX = centerX - width / 4;
-        int leftY = centerY - height / 2;
-        leftRectangle = new Rectangle(leftX, leftY, width / 2, height);
-        leftRectangle.setFill(Color.RED);
+        double leftX = centerX - width / 4;
+        double leftY = centerY - height / 2;
+        sMagnet = new Rectangle(leftX, leftY, width / 2, height);
+        sMagnet.setFill(Color.RED);
 
-        int rightX = centerX + width / 4;
-        int rightY = centerY - height / 2;
-        rightRectangle = new Rectangle(rightX, rightY, width / 2, height);
-        rightRectangle.setFill(Color.BLUE);
+        double rightX = centerX + width / 4;
+        double rightY = centerY - height / 2;
+
+        nMagnet = new Rectangle(rightX, rightY, width / 2, height);
+        nMagnet.setFill(Color.BLUE);
     }
 
     public void draw(GraphicsContext gc) {
+        double rightX = centerX + this.width / 4;
+        double leftX = centerX - this.width / 4;
+        double y = centerY - this.height / 2;
+        sMagnet.setX(leftX);
+        sMagnet.setY(y);
+        nMagnet.setX(rightX);
+        nMagnet.setY(y);
+
         gc.save();
         gc.setFill(Color.BLUE);
-        gc.fillRect(leftRectangle.getX(), leftRectangle.getY(), leftRectangle.getWidth(), leftRectangle.getHeight());
+        gc.fillRect(sMagnet.getX() - sMagnet.getWidth()/2, sMagnet.getY() - sMagnet.getHeight()/2, sMagnet.getWidth(), sMagnet.getHeight());
         gc.setFill(Color.RED);
-        gc.fillRect(rightRectangle.getX(), rightRectangle.getY(), rightRectangle.getWidth(), rightRectangle.getHeight());
+        gc.fillRect(nMagnet.getX() - nMagnet.getWidth()/2, nMagnet.getY() - nMagnet.getHeight()/2, nMagnet.getWidth(), nMagnet.getHeight());
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(40));
-        gc.fillText("N", rightRectangle.getX() + rightRectangle.getWidth() / 2 - 15, rightRectangle.getY() + rightRectangle.getHeight()/2 + 15);
-        gc.fillText("S", leftRectangle.getX() + leftRectangle.getWidth() / 2 - 15, leftRectangle.getY() + leftRectangle.getHeight()/2 + 15);
+        gc.fillText("N", nMagnet.getX() - 15, nMagnet.getY() + 15);
+        gc.fillText("S", sMagnet.getX() - 15, sMagnet.getY() + 15);
         gc.restore();
     }
 
@@ -48,11 +65,15 @@ public class Magnet {
         Affine affine = new Affine();
         affine.appendRotation(angle, centerX, centerY);
 
-        leftRectangle.getTransforms().clear();
-        leftRectangle.getTransforms().add(affine);
+        sMagnet.getTransforms().clear();
+        sMagnet.getTransforms().add(affine);
 
-        rightRectangle.getTransforms().clear();
-        rightRectangle.getTransforms().add(affine);
+        nMagnet.getTransforms().clear();
+        nMagnet.getTransforms().add(affine);
+    }
+
+    public double getMagneticMoment(double I) {
+        return I * (nMagnet.getX() - sMagnet.getX());
     }
 
     public boolean contains(double x, double y) {
@@ -61,4 +82,5 @@ public class Magnet {
         return x > magnetX - width / 2 && x < magnetX + width / 2 &&
                 y > magnetY - height / 2 && y < magnetY + height / 2;
     }
+
 }
